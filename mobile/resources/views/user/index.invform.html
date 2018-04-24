@@ -1,0 +1,111 @@
+{include file="page_header"}
+		<div class="con mb-7">
+			<form action="{url('user/index/inv_form')}" method="post" class="validation">
+                            <section class="user-return-list-box padding-all b-color-f m-top08">
+                                <div id="tuicause">
+                                <h4 class="f-04 col-3">增票资质信息</h4>
+                                <ul class="user-register of-hidden">
+                                    <li class="text-all dis-box j-text-all">
+                                        <div class="box-flex input-text">
+                                             <input class="j-input-text" type="text" name="company_name" placeholder="单位名称"  datatype="*" nullmsg="单位名称" value="{$vat_info.company_name}">
+                                            <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                        </div>
+                                    </li>
+                                    <li class="text-all dis-box j-text-all">
+                                        <div class="box-flex input-text">
+                                            <input class="j-input-text" type="tel" name="tax_id" placeholder="纳税人识别码" datatype="*" nullmsg="纳税人识别码" value="{$vat_info.tax_id}">
+                                            <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                        </div>
+                                    </li>
+
+                                    <li class="text-all dis-box j-text-all">
+                                        <div class="box-flex input-text">
+                                            <input class="j-input-text" type="text" name="company_address" placeholder="注册地址" datatype="*" nullmsg="注册地址" value="{$vat_info.company_address}">
+                                            <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                        </div>
+                                    </li>
+                                    <li class="text-all dis-box j-text-all">
+                                        <div class="box-flex input-text">
+                                             <input class="j-input-text" type="tel" name="company_telephone" placeholder="注册电话" datatype="*" nullmsg="注册电话" value="{$vat_info.company_telephone}">
+                                            <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                        </div>
+                                    </li>
+                                    <li class="text-all dis-box j-text-all">
+                                        <div class="box-flex input-text">
+                                            <input class="j-input-text" type="text" name="bank_of_deposit" placeholder="开户银行" datatype="*" nullmsg="开户银行" value="{$vat_info.bank_of_deposit}">
+                                            <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                        </div>
+                                    </li>
+                                    <li class="text-all dis-box j-text-all">
+                                        <div class="box-flex input-text">
+                                               <input class="j-input-text" type="tel" name="bank_account" placeholder="银行账户" datatype="*" nullmsg="银行账户" value="{$vat_info.bank_account}">
+                                            <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                        </div>
+                                    </li>
+                            </section>
+                             <section class="user-return-list-box padding-all b-color-f m-top08">
+                                <div id="tuicause">
+                                <h4 class="f-04 col-3">票据收件信息</h4>
+                                <ul class="user-register of-hidden">
+                                    <li class="text-all dis-box j-text-all">
+                                        <div class="box-flex input-text">
+                                             <input class="j-input-text" type="text" name="consignee_name" placeholder="收票人姓名"  datatype="*" nullmsg="收票人姓名" value="{$vat_info.consignee_name}">
+                                            <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                        </div>
+                                    </li>
+                                    <li class="text-all dis-box j-text-all">
+                                        <div class="box-flex input-text">
+                                            <input class="j-input-text" type="tel" name="consignee_mobile_phone" placeholder="收票人手机号" datatype="*" nullmsg="收票人手机号" value="{$vat_info.consignee_mobile_phone}">
+                                            <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                        </div>
+                                    </li>
+
+                                    <li class="text-all dis-box j-text-all">
+                                        <div class="box-flex input-text">
+                                            <input class="j-input-text" type="text" name="consignee_province" placeholder="收票人省份" datatype="*" nullmsg="收票人省份" value="{$vat_info.consignee_province}">
+                                            <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                        </div>
+                                    </li>
+                                    <li class="text-all dis-box j-text-all">
+                                        <div class="box-flex input-text">
+                                            <input class="j-input-text" type="text" name="consignee_address" placeholder="收票人地址" datatype="*" nullmsg="收票人地址" value="{$vat_info.consignee_address}">
+                                            <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                        </div>
+                                    </li>
+                                    
+                            </section>
+                            <section class="user-center j-f-tel  ect-button-more  filter-btn">
+                                <input class="j-input-text" type="hidden" name="id" value="{$id}">	
+			        <button type="submit" class="btn-submit   dis-box">提交</button>
+                            </section>
+                            
+    		</form>
+		</div>
+		<!--引用js-->
+      <!--快捷导航-->
+    {include file="float_nav"} 
+                    
+    {include file="float_nav_footer"} 
+    <script>
+        $(function () {
+            $.Tipmsg.r = null;
+            $(".validation").Validform({
+                tiptype: function (msg) {
+                    d_messages(msg);
+                },
+                tipSweep: true,
+                ajaxPost: true,
+                callback: function (data) {
+                    // {"info":"demo info","status":"y"}
+                    if (data.status === 'y') {
+                        window.location.href = data.url;
+                    } else {
+                        d_messages(data.info);
+                    }
+                }
+            });
+        })
+       </script>
+	</body>
+	
+</html>

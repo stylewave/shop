@@ -1,0 +1,55 @@
+{include file="page_header"}
+<style type="text/css">
+
+  .ewm{
+      width: 100%;
+  }
+  .position_div{
+        margin: 0.5rem 0 8rem 0;
+  }
+  .position_div p{
+    float: left;
+  }  
+  .page_img{
+    width:7rem;margin-left: 5rem;
+  }
+  .page_img img{    width: 100%;
+
+  }
+  .cl{
+    clear: both;
+  }
+  .hei{
+    color:#211111;
+    font-weight: 900;
+  }
+  .description{
+    margin-left: 1rem;
+  }
+  .hong{
+    color:#e85656;
+    font-weight: 900;
+  }
+  .dxiao{
+    font-size: 1rem;
+    color:#585454;
+  }
+</style>
+
+     <div class="position_div">
+        <p class="page_img"><img src="{$page_img}" ></p>
+        <p class="description">
+
+        <span class="hei">我是</span> <span class="hong">{$description}</span>
+         <span class="dxiao">
+            <br/>快来参与分享专属二维码<br>和我一起成为分销商吧
+         </span>
+        </p>
+        <span class="cl"></span>
+        
+    </div>
+    <div>
+    <img  class="ewm" src="{$ewm}"> 
+    </div>
+</body>
+</html>

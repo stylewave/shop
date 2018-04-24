@@ -1,0 +1,389 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title"><a href="{$action_link2.href}" class="s-back">{$lang.back}</a>{$lang.08_members} - {$ur_here}</div>
+            <div class="content">
+        	<div class="tabs_info">
+            	<ul>
+                    <li {if $form_action eq 'update'}class="curr"{/if}><a href="users.php?act=edit&id={$user_id}">基本信息</a></li>
+                    <li {if $form_action eq 'address_list'}class="curr"{/if}><a href="users.php?act=address_list&id={$user_id}">收货地址</a></li>
+                    <li><a href="order.php?act=list&user_id={$user_id}">查看订单</a></li>
+                    <li {if $form_action eq 'bt_edit'}class="curr"{/if}><a href="user_baitiao_log.php?act=bt_add_tp&user_id={$user_id}">设置白条</a></li>
+                    <li {if $form_action eq 'account_log'}class="curr"{/if}><a href="account_log.php?act=list&user_id={$user_id}">账目明细</a></li>
+                </ul>
+            </div>
+            <div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>{$lang.operating_hints}</h4><span id="explanationZoom" title="{$lang.fold_tips}"></span></div>
+                <ul>
+                	<li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
+                    <li>编辑会员账号信息请根据提示慎重操作，避免出现不必要的问题。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+                <div class="mian-info">
+				{/if}
+                    {if $form_action eq 'update'}
+                        <div class="switch_info user_basic" style="display:block;">
+                            <form method="post" action="users_com.php" name="theForm" id="user_update">
+                                  <div class="item">
+                                    <div class="label">{$lang.require_field}&nbsp;编码：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="code" class="text" autocomplete="off" value="{$user.code}" id="code"/>
+                                        <div class="form_prompt"></div> 
+                                    </div>
+                                </div>
+                               
+                                   <div class="item">
+                                    <div class="label">{$lang.require_field}&nbsp;公司名称：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="companyName" class="text" autocomplete="off" value="{$user.companyName}" id="companyName"/>
+                                        <div class="form_prompt"></div> 
+                                    </div>
+                                </div>
+                                    <div class="item">
+                                    <div class="label">{$lang.require_field}&nbsp;金额：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="je" class="text" autocomplete="off" value="{$user.je}" id="je"/>
+                                        <div class="form_prompt"></div> 
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">&nbsp;</div>
+                                    <div class="label_value info_btn">
+                                        <a href="javascript:;" class="button" id="submitBtn">{$lang.button_submit}</a>
+                                        <input type="hidden" name="act" value="{$form_action}" />
+                                        <input type="hidden" name="id" value="{$user.company_id}" /> 
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    {/if}
+                    {if $form_action eq 'address_list'}
+                    <div class="switch_info user_address">
+                        <div class="common-content">
+                            <div class="list-div" id="listDiv">
+                                <table cellpadding="0" cellspacing="0" border="0">
+                                    <thead>
+                                        <tr>
+                                            <th width="8%"><div class="tDiv">{$lang.consignee}</div></th>
+                                            <th width="23%"><div class="tDiv">{$lang.address}</div></th>
+                                            <th width="10%"><div class="tDiv">{$lang.mobile}</div></th>
+                                            <th width="10%"><div class="tDiv">{$lang.email}</div></th>
+                                            <th width="10%"><div class="tDiv">{$lang.tel}</div></th>
+                                            <th width="8%"><div class="tDiv">{$lang.zipcode}</div></th>
+                                            <th width="8%"><div class="tDiv">{$lang.sign_building}</div></th>
+                                            <th width="10%"><div class="tDiv">{$lang.best_time}</div></th>
+                                            <th width="10%" class="handle">{$lang.handler}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {foreach from=$address key=Key item=val name=address}
+                                        <tr>
+                                            <td><div class="tDiv">{$val.consignee|escape}</div></td>
+                                            <td><div class="tDiv">[{$val.country_name}&nbsp;{$val.province_name}&nbsp;{$val.city_name}&nbsp;{$val.district_name}] {$val.address|escape}{if $val.zipcode}[{$val.zipcode|escape}]{/if}</div></td>
+                                            <td><div class="tDiv">{$val.mobile}</div></td>
+                                            <td><div class="tDiv">{$val.email}</div></td>
+                                            <td><div class="tDiv">{$val.tel}</div></td>
+                                            <td><div class="tDiv">{$val.zipcode|escape}</div></td>
+                                            <td><div class="tDiv">{$val.sign_building|escape}</div></td>
+                                            <td><div class="tDiv">{$val.best_time|escape}</div></td>
+                                            <td class="handle">
+                                                <div class="tDiv a2">
+                                                    <a href="user_address_log.php?act=edit&address_id={$val.address_id}&user_id={$val.user_id}" title="{$lang.edit}" class="btn_edit"><i class="icon icon-edit"></i>{$lang.edit}</a>
+                                                    <a href="javascript:confirm_redirect('{$lang.remove_confirm_address}', 'user_address_log.php?act=remove&id={$val.address_id}')" title="{$lang.remove}" class="btn_trash"><i class="icon icon-trash"></i>{$lang.remove}</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {foreachelse}
+                                        <tr><td class="no-records" colspan="12">{$lang.no_records}</td></tr>
+                                        {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {/if}
+                    {if $form_action eq 'order_list'}
+                        <div class="switch_info user_order">
+                        </div>
+                    {/if}
+                    {if $form_action eq 'bt_edit'}
+                    	<div class="common-head">
+                            <div class="fl">
+                                <a href="{$action_link.href}"><div class="fbutton"><div class="add" title="{$action_link.text}"><span><i class="icon icon-plus"></i>{$action_link.text}</span></div></div></a>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="switch_info user_set_baitiao">
+                            <form method="post" action="user_baitiao_log.php" name="theForm" id="user_baitiao_log">
+                                <div class="common-content">
+                                    <div class="item">
+                                        <div class="label">{$lang.require_field}&nbsp;{$lang.user_name}</div>
+                                        <div class="label_value font14">{$user_info.user_name}<input type="hidden" name="user_id" value="{$user_info.user_id}" /></div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">{$lang.require_field}&nbsp;{$lang.financial_credit}</div>
+                                        <div class="label_value">
+                                            <input type="text" name="amount" class="text" autocomplete="off" value="{$bt_info.amount}"  id="amount"/>
+                                            <div class="form_prompt"></div>
+                                            <div class="notic">{$lang.notice_financial_credit}</div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">{$lang.require_field}&nbsp;{$lang.Credit_payment_days}</div>
+                                        <div class="label_value">
+                                            <input type="text" name="repay_term" class="text" autocomplete="off" value="{$bt_info.repay_term}" id="repay_term"/>
+                                            <div class="form_prompt"></div>
+                                            <div class="notic">{$lang.notice_Credit_payment_days}</div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">{$lang.require_field}&nbsp;{$lang.Suspended_term}：</div>
+                                        <div class="label_value">
+                                            <input type="text" name="over_repay_trem" class="text" autocomplete="off" value="{$bt_info.over_repay_trem}" id="over_repay_trem"/>
+                                            <div class="form_prompt"></div>
+                                            <div class="notic">{$lang.notice_Suspended_term}</div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">&nbsp;</div>
+                                        <div class="label_value info_btn">
+                                            <a href="javascript:;" class="button" id="submitBtn_bt">{$lang.button_submit}</a>
+                                            <input type="hidden" name="act" value="{$form_action}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    {/if}
+                    {if $form_action eq 'account_log'}
+						{if $full_page}
+                        <div class="switch_info user_account_details">
+                            <div class="account-left">
+                            	<p><strong>{$lang.label_user_name}</strong><strong class="red">{$user.user_name}</strong></p>
+                                <p><strong>{$lang.label_user_money}</strong><strong class="red">{$user.formated_user_money}</strong></p>
+                                <p><strong>{$lang.label_frozen_money}</strong><strong class="red">{$user.formated_frozen_money}</strong></p>
+                                <p><strong>{$lang.label_rank_points}</strong><strong class="red">{$user.rank_points}</strong></p>
+                                <p><strong>{$lang.label_pay_points}</strong><strong class="red">{$user.pay_points}</strong></p>
+                                <a href="{$action_link.href}" class="btn btn35 red_btn_2">{$action_link.text}</a>
+                            </div>
+                            <div class="account-right">
+                            	<div class="common-head">
+                                    <div class="refresh ml20">
+                                        <div class="refresh_tit" title="{$lang.refresh_data}"><i class="icon icon-refresh"></i></div>
+                                        <div class="refresh_span">{$lang.refresh} - {$lang.total_data}{$record_count}{$lang.data}</div>
+                                    </div>
+                                    <form action="account_log.php" id="account_logForm">
+                                        <div class="search">
+                                                <div id="account_log_select" class="imitate_select select_w140">
+                                                    <div class="cite">{$lang.all_account}</div>
+                                                    <ul>
+                                                       <li><a href="javascript:;" data-value="">{$lang.all_account}</a></li>
+                                                       <li><a href="javascript:;" data-value="user_money">{$lang.user_money}</a></li>
+                                                       <li><a href="javascript:;" data-value="frozen_money">{$lang.frozen_money}</a></li>
+                                                       <li><a href="javascript:;" data-value="rank_points">{$lang.rank_points}</a></li>
+                                                       <li><a href="javascript:;" data-value="pay_points">{$lang.pay_points}</a></li>
+                                                    </ul>
+                                                    <input name="account_type" type="hidden" value="{$account_type}" id="account_log_val">
+                                                </div>
+                                        </div>
+                                        <input type="hidden" name="act" value="list"/>
+                                        <input type="hidden" name="user_id" value="{$smarty.get.user_id}"/>
+                                    </form>
+                                </div>
+                                <div class="common-content">
+                                    <div class="list-div"  id="listDiv">
+                                   {/if}
+                                        <table cellpadding="0" cellspacing="0" border="0">
+                                            <thead>
+                                                <tr>
+                                                    <th width="12%"><div class="tDiv pl30">{$lang.change_time}</div></th>
+                                                    <th width="40%"><div class="tDiv">{$lang.change_desc}</div></th>
+                                                    <th width="12%"><div class="tDiv">{$lang.user_money}</div></th>
+                                                    <th width="12%"><div class="tDiv">{$lang.frozen_money}</div></th>
+                                                    <th width="12%"><div class="tDiv">{$lang.rank_points}</div></th>
+                                                    <th width="12%"><div class="tDiv">{$lang.pay_points}</div></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {foreach from=$account_list item=account}
+                                                <tr>
+                                                    <td><div class="tDiv pl30">{$account.change_time}</div></td>
+                                                    <td><div class="tDiv">{$account.change_desc|escape:html}</div></td>
+                                                    <td>
+                                                        <div class="tDiv">
+                                                            {if $account.user_money gt 0}
+                                                                <span style="color:#0000FF">+{$account.user_money}</span>
+                                                            {elseif $account.user_money lt 0}
+                                                                <span style="color:#FF0000">{$account.user_money}</span>
+                                                            {else}
+                                                                {$account.user_money}
+                                                            {/if}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="tDiv">
+                                                            {if $account.frozen_money gt 0}
+                                                                <span style="color:#0000FF">+{$account.frozen_money}</span>
+                                                            {elseif $account.frozen_money lt 0}
+                                                                <span style="color:#FF0000">{$account.frozen_money}</span>
+                                                            {else}
+                                                                {$account.frozen_money}
+                                                            {/if}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                       <div class="tDiv">
+                                                            {if $account.rank_points gt 0}
+                                                             <span style="color:#0000FF">+{$account.rank_points}</span>
+                                                           {elseif $account.rank_points lt 0}
+                                                             <span style="color:#FF0000">{$account.rank_points}</span>
+                                                           {else}
+                                                             {$account.rank_points}
+                                                           {/if}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="tDiv">
+                                                            {if $account.pay_points gt 0}
+                                                                <span style="color:#0000FF">+{$account.pay_points}</span>
+                                                            {elseif $account.pay_points lt 0}
+                                                                <span style="color:#FF0000">{$account.pay_points}</span>
+                                                            {else}
+                                                                {$account.pay_points}
+                                                            {/if}
+                                                        </div>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                {foreachelse}
+                                                <tr><td colspan="12" class="no_record">{$lang.no_records}</td></tr>
+                                                {/foreach}
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="12">
+                                                        <div class="list-page">
+                                                            {include file="library/page.lbi"}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                       {if $full_page}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						{/if}
+                        {/if}
+					{if $full_page}
+                </div>
+            </div>
+        </div>
+    </div>
+ {include file ='library/pagefooter.lbi'}
+	
+    <script type="text/javascript">
+		{if $form_action eq 'account_log'}
+			listTable.recordCount = '{$record_count}';
+			listTable.pageCount = '{$page_count}';
+			
+			{foreach from=$filter item=item key=key}
+			listTable.filter.{$key} = '{$item}';
+		{/foreach}
+		{/if}
+		
+		$(function(){
+			$('.nyroModal').nyroModal();
+		});
+		
+		$(function(){
+			//设置编辑会员验证
+			{if $form_action eq 'update'}
+			$("#submitBtn").click(function(){
+				if($("#user_update").valid()){
+					$("#user_update").submit();
+				}
+			});
+			$('#user_update').validate({
+				errorPlacement:function(error, element){
+					var error_div = element.parents('div.label_value').find('div.form_prompt');
+					element.parents('div.label_value').find(".notic").hide();
+					error_div.append(error);
+				},
+				rules:{
+					email:{
+						required:true,
+						email:true
+					},
+					confirm_password:{
+						equalTo:"#password"
+					}
+				},
+				messages:{
+					email:{
+						required : '<i class="icon icon-exclamation-sign"></i>'+invalid_email,
+						email : '<i class="icon icon-exclamation-sign"></i>'+invalid_email
+					},
+					confirm_password : {
+						equalTo:'<i class="icon icon-exclamation-sign"></i>'+password_not_same
+					}
+				}
+			});
+			{/if}
+			
+			//设置白条验证
+			{if $form_action eq 'bt_edit'}
+			$("#submitBtn_bt").click(function(){
+				if($("#user_baitiao_log").valid()){
+					$("#user_baitiao_log").submit();
+				}
+			});
+			$('#user_baitiao_log').validate({
+				errorPlacement:function(error, element){
+					var error_div = element.parents('div.label_value').find('div.form_prompt');
+					element.parents('div.label_value').find(".notic").hide();
+					error_div.append(error);
+				},
+				rules:{
+					amount:{
+						required:true
+					},
+					repay_term:{
+						required:true
+					},
+					over_repay_trem:{
+						required:true
+					}
+				},
+				messages:{
+					amount:{
+						required:'<i class="icon icon-exclamation-sign"></i> 金融额度不能为空'
+					},
+					repay_term:{
+						required:'<i class="icon icon-exclamation-sign"></i> 信用账期不能为空'
+					},
+					over_repay_trem:{
+						required:'<i class="icon icon-exclamation-sign"></i>信用账期缓期期限不能为空'
+					}
+				}	
+			});
+			{/if}
+		});
+        $.divselect("#account_log_select","#account_log_val",function(obj){
+            $("#account_logForm").submit();
+        });
+		
+		
+		$(window).load(function(){
+			var height = $(".user_account_details").height();
+			$(".account-left").css({"height":height});
+		});
+    </script>
+</body>
+</html>
+{/if}
